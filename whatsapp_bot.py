@@ -1,12 +1,14 @@
 
+
 import pyautogui as pt
 import pyperclip as pc
 from pynput.mouse import Controller, Button
 from time import sleep
+import unicodedata
+from pyscreeze import pixel
 from whatsapp_responses import response
 
 # Requires opencv-python package for image recognition confidence
-
 # Mouse click workaround for MAC OS
 mouse = Controller()
 
@@ -22,11 +24,12 @@ class WhatsApp:
         self.last_message = ''
 
     # Navigate to the green dots for new messages
+
     def nav_green_dot(self):
         try:
             position = pt.locateOnScreen('green_circle_paperclip.png', confidence=.8)
             pt.moveTo(position[0], position[1], duration=0.5)
-            pt.moveRel(-100, 0, duration=0.5)
+            pt.moveRel(-100, 0, duration=self.speed)
             pt.doubleClick()
         except Exception as e:
             print('Exception (nav_green_dot): ', e)
@@ -35,7 +38,7 @@ class WhatsApp:
     def nav_input_box(self):
         try:
             position = pt.locateOnScreen('smileys_paperclip.png', confidence=.6)
-            pt.moveTo(position[0],position[1], duration=self.speed)
+            pt.moveTo(position[0], position[1], duration=self.speed)
             pt.moveRel(200, 0, duration=self.speed)
             pt.doubleClick(interval=self.click_speed)
         except Exception as e:
@@ -45,12 +48,14 @@ class WhatsApp:
     def nav_message(self):
         try:
             position = pt.locateOnScreen('smileys_paperclip.png', confidence=.6)
+            x = position[0]
+            y = position[1]
             pt.moveTo(position[0], position[1], duration=self.speed)
-            pt.moveRel(120, -50, duration=self.speed)  # x,y has to be adjusted depending on your computer
-            if pt.pixelMatchesColor(int(position[0] + 50), int(position[0] - 35), (255, 255, 255), tolerance=10):
-                print("is white")
+            pt.moveRel(90, -40, duration=self.speed)  # x,y has to be adjusted depending on your computer
+            if pt.pixelMatchesColor(int(x + 110), int(y - 55), (255, 255, 255), tolerance=10):
+                print("Pink")
             else:
-                print("is not white")
+                print("Dark")
         except Exception as e:
             print('Exception (nav_message): ', e)
 
@@ -60,24 +65,22 @@ class WhatsApp:
         sleep(self.speed)
         mouse.click(Button.right, 1)
         sleep(self.speed)
-        pt.moveRel(25, -130, duration=self.speed)  # x,y has to be adjusted depending on your computer
+        pt.moveRel(50, -130, duration=self.speed)  # x,y has to be adjusted depending on your computer
         mouse.click(Button.left, 1)
         sleep(1)
 
         # Gets and processes the message
         self.message = pc.paste()
         print('User says: ', self.message)
-        # Mesajı arkaya yolla cevabı al
-        # Cevabı yaz
-        # Devam
 
     # Sends the message to the user
     def send_message(self):
         try:
+            var = "Ü/ç"
             if self.message != self.last_message:
                 bot_response = response(self.message)
                 print('You say: ', bot_response)
-                pt.typewrite("Deneme", interval=.1)
+                pt.typewrite(var, interval=.1)
                 pt.typewrite('\n')  # Sends the message (Disable it while testing)
 
                 # Assigns them the same message
@@ -97,6 +100,16 @@ class WhatsApp:
             mouse.click(Button.left, 1)
         except Exception as e:
             print('Exception (nav_x): ', e)
+
+    # just try (voice message detector)
+    def check_voice_messages(self):
+        try:
+            r = pt.locateOnScreen('play_button.PNG', grayscale=True, confidence=0.5)
+            while r is None:
+                r = None
+                print('No detected voice message',r)
+            else:
+                print('No new messages...')
 
 
 # Initialises the WhatsApp Bot
