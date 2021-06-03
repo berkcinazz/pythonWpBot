@@ -35,16 +35,6 @@ class WhatsApp:
         except Exception as e:
             print('Exception (nav_green_dot): ', e)
 
-    # Navigate to our message input box
-    def nav_input_box(self):
-        try:
-            position = pt.locateOnScreen('smileys_paperclip.png', confidence=.6)
-            pt.moveTo(position[0], position[1], duration=self.speed)
-            pt.moveRel(200, 0, duration=self.speed)
-            pt.doubleClick(interval=self.click_speed)
-        except Exception as e:
-            print('Exception (nav_input_box): ', e)
-
     # Navigates to the message we want to respond to
     def nav_message(self):
         try:
@@ -73,6 +63,16 @@ class WhatsApp:
         # Gets and processes the message
         self.message = pc.paste()
         print('User says: ', self.message)
+
+    # Navigate to our message input box
+    def nav_input_box(self):
+        try:
+            position = pt.locateOnScreen('smileys_paperclip.png', confidence=.6)
+            pt.moveTo(position[0], position[1], duration=self.speed)
+            pt.moveRel(200, 0, duration=self.speed)
+            pt.doubleClick(interval=self.click_speed)
+        except Exception as e:
+            print('Exception (nav_input_box): ', e)
 
     # Sends the message to the user
     def send_message(self):
