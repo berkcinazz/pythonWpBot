@@ -1,5 +1,3 @@
-
-
 import pyautogui as pt
 import pyperclip as pc
 from pynput.mouse import Controller, Button
@@ -23,6 +21,9 @@ class WhatsApp:
         self.message = ''
         self.last_message = ''
 
+    def alt_tab(self):
+        pt.hotkey('alt', 'tab', duration=self.speed)
+
     # Navigate to the green dots for new messages
 
     def nav_green_dot(self):
@@ -34,16 +35,6 @@ class WhatsApp:
         except Exception as e:
             print('Exception (nav_green_dot): ', e)
 
-    # Navigate to our message input box
-    def nav_input_box(self):
-        try:
-            position = pt.locateOnScreen('smileys_paperclip.png', confidence=.6)
-            pt.moveTo(position[0], position[1], duration=self.speed)
-            pt.moveRel(200, 0, duration=self.speed)
-            pt.doubleClick(interval=self.click_speed)
-        except Exception as e:
-            print('Exception (nav_input_box): ', e)
-
     # Navigates to the message we want to respond to
     def nav_message(self):
         try:
@@ -53,9 +44,9 @@ class WhatsApp:
             pt.moveTo(position[0], position[1], duration=self.speed)
             pt.moveRel(90, -40, duration=self.speed)  # x,y has to be adjusted depending on your computer
             if pt.pixelMatchesColor(int(x + 110), int(y - 55), (255, 255, 255), tolerance=10):
-                print("Pink")
+                print("is white")
             else:
-                print("Dark")
+                print("is not white")
         except Exception as e:
             print('Exception (nav_message): ', e)
 
@@ -73,10 +64,20 @@ class WhatsApp:
         self.message = pc.paste()
         print('User says: ', self.message)
 
+    # Navigate to our message input box
+    def nav_input_box(self):
+        try:
+            position = pt.locateOnScreen('smileys_paperclip.png', confidence=.6)
+            pt.moveTo(position[0], position[1], duration=self.speed)
+            pt.moveRel(200, 0, duration=self.speed)
+            pt.doubleClick(interval=self.click_speed)
+        except Exception as e:
+            print('Exception (nav_input_box): ', e)
+
     # Sends the message to the user
     def send_message(self):
         try:
-            var = "Ü/ç"
+            var = "send_message worked"
             if self.message != self.last_message:
                 bot_response = response(self.message)
                 print('You say: ', bot_response)
@@ -101,22 +102,13 @@ class WhatsApp:
         except Exception as e:
             print('Exception (nav_x): ', e)
 
-    # just try (voice message detector)
-    def check_voice_messages(self):
-        try:
-            r = pt.locateOnScreen('play_button.PNG', grayscale=True, confidence=0.5)
-            while r is None:
-                r = None
-                print('No detected voice message',r)
-            else:
-                print('No new messages...')
-
 
 # Initialises the WhatsApp Bot
 wa_bot = WhatsApp(speed=.60, click_speed=.60)
 
 # Run the programme in a loopCool!
 while True:
+    wa_bot.alt_tab()
     wa_bot.nav_green_dot()
     wa_bot.nav_message()
     wa_bot.get_message()
