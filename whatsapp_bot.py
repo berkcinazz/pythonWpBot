@@ -1,5 +1,3 @@
-
-
 import pyautogui as pt
 import pyperclip as pc
 from pynput.mouse import Controller, Button
@@ -22,6 +20,9 @@ class WhatsApp:
         self.click_speed = click_speed
         self.message = ''
         self.last_message = ''
+
+    def alt_tab(self):
+        pt.hotkey('alt', 'tab', duration=self.speed)
 
     # Navigate to the green dots for new messages
 
@@ -53,9 +54,9 @@ class WhatsApp:
             pt.moveTo(position[0], position[1], duration=self.speed)
             pt.moveRel(90, -40, duration=self.speed)  # x,y has to be adjusted depending on your computer
             if pt.pixelMatchesColor(int(x + 110), int(y - 55), (255, 255, 255), tolerance=10):
-                print("Pink")
+                print("is white")
             else:
-                print("Dark")
+                print("is not white")
         except Exception as e:
             print('Exception (nav_message): ', e)
 
@@ -76,7 +77,7 @@ class WhatsApp:
     # Sends the message to the user
     def send_message(self):
         try:
-            var = "Ü/ç"
+            var = "send_message worked"
             if self.message != self.last_message:
                 bot_response = response(self.message)
                 print('You say: ', bot_response)
@@ -101,22 +102,13 @@ class WhatsApp:
         except Exception as e:
             print('Exception (nav_x): ', e)
 
-    # just try (voice message detector)
-    def check_voice_messages(self):
-        try:
-            r = pt.locateOnScreen('play_button.PNG', grayscale=True, confidence=0.5)
-            while r is None:
-                r = None
-                print('No detected voice message',r)
-            else:
-                print('No new messages...')
-
 
 # Initialises the WhatsApp Bot
 wa_bot = WhatsApp(speed=.60, click_speed=.60)
 
 # Run the programme in a loopCool!
 while True:
+    wa_bot.alt_tab()
     wa_bot.nav_green_dot()
     wa_bot.nav_message()
     wa_bot.get_message()
