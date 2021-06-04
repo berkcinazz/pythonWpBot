@@ -47,7 +47,7 @@ class WhatsApp:
             if playbutton is None:
                 print("Move on")
             else:
-                print('Just message !')
+                print('Just message!')
         except Exception as e:
             print('Exception (nav_message): ', e)
 
@@ -70,7 +70,7 @@ class WhatsApp:
         try:
             position = pt.locateOnScreen('smileys_paperclip.png', confidence=.6)
             pt.moveTo(position[0], position[1], duration=self.speed)
-            pt.moveRel(200, 0, duration=self.speed)
+            pt.moveRel(200, 15, duration=self.speed)
             pt.doubleClick(interval=self.click_speed)
         except Exception as e:
             print('Exception (nav_input_box): ', e)
