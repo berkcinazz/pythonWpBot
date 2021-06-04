@@ -1,13 +1,12 @@
+import cv2
 import pyautogui as pt
 import pyperclip as pc
 from pynput.mouse import Controller, Button
 from time import sleep
-import unicodedata
-from pyscreeze import pixel
 from whatsapp_responses import response
+import numpy as np
 
 # Requires opencv-python package for image recognition confidence
-# Mouse click workaround for MAC OS
 mouse = Controller()
 
 
@@ -25,7 +24,6 @@ class WhatsApp:
         pt.hotkey('alt', 'tab', duration=self.speed)
 
     # Navigate to the green dots for new messages
-
     def nav_green_dot(self):
         try:
             position = pt.locateOnScreen('green_circle_paperclip.png', confidence=.8)
@@ -38,6 +36,7 @@ class WhatsApp:
     # Navigates to the message we want to respond to
     def nav_message(self):
         try:
+            playbutton = pt.locateOnScreen('play_button.png')
             position = pt.locateOnScreen('smileys_paperclip.png', confidence=.6)
             x = position[0]
             y = position[1]
@@ -47,6 +46,10 @@ class WhatsApp:
                 print("is white")
             else:
                 print("is not white")
+            if playbutton is None:
+                print("Move on")
+            else:
+                print('Just message !')
         except Exception as e:
             print('Exception (nav_message): ', e)
 
