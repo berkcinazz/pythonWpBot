@@ -1,10 +1,8 @@
-import cv2
 import pyautogui as pt
 import pyperclip as pc
 from pynput.mouse import Controller, Button
 from time import sleep
 from whatsapp_responses import response
-import numpy as np
 
 # Requires opencv-python package for image recognition confidence
 mouse = Controller()
@@ -55,21 +53,17 @@ class WhatsApp:
 
     # Copies the message that we want to process
     def get_message(self):
-        try:
-            imagecontrol = pt.locateOnScreen('back_button.png')
-            mouse.click(Button.left, 3)
-            sleep(self.speed)
-            mouse.click(Button.right, 1)
-            sleep(self.speed)
-            pt.moveRel(50, -130, duration=self.speed)  # x,y has to be adjusted depending on your computer
-            mouse.click(Button.left, 1)
-            sleep(1)
+        mouse.click(Button.left, 3)
+        sleep(self.speed)
+        mouse.click(Button.right, 1)
+        sleep(self.speed)
+        pt.moveRel(50, -130, duration=self.speed)  # x,y has to be adjusted depending on your computer
+        mouse.click(Button.left, 1)
+        sleep(1)
 
-            # Gets and processes the message
-            self.message = pc.paste()
-            print('User says: ', self.message)
-        except Exception as e:
-            print('Exception (nav_message): ', e)
+        # Gets and processes the message
+        self.message = pc.paste()
+        print('User says: ', self.message)
 
     # Navigate to our message input box
     def nav_input_box(self):
