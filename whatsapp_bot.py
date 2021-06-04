@@ -1,10 +1,8 @@
-import cv2
 import pyautogui as pt
 import pyperclip as pc
 from pynput.mouse import Controller, Button
 from time import sleep
 from whatsapp_responses import response
-import numpy as np
 
 # Requires opencv-python package for image recognition confidence
 mouse = Controller()
