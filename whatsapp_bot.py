@@ -110,6 +110,7 @@ wa_bot = WhatsApp(speed=.60, click_speed=.60)
 # Run the programme in a loopCool!
 while True:
     wa_bot.alt_tab()
+    wa_bot.sleep(2)
     wa_bot.nav_green_dot()
     wa_bot.nav_message()
     wa_bot.get_message()
